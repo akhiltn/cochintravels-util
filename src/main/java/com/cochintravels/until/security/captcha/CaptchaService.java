@@ -1,4 +1,4 @@
-package com.cochintravels.until.service.captcha;
+package com.cochintravels.until.security.captcha;
 
 import com.cochintravels.until.exception.CochinTravelsException;
 import com.cochintravels.until.model.GoogleResponse;
@@ -21,30 +21,26 @@ public class CaptchaService implements ICaptchaService {
 
     private static final String RECAPTCHA_URL_TEMPLATE = "https://www.google.com/recaptcha/api/siteverify?secret=%s&response=%s&remoteip=%s";
     private static final Pattern RESPONSE_PATTERN = Pattern.compile("[A-Za-z0-9_-]+");
-
+    @Autowired
+    protected ReCaptchaAttemptService reCaptchaAttemptService;
     @Autowired
     private HttpServletRequest request;
-
     @Autowired
     private CaptchaSettings captchaSettings;
-
     @Autowired
     private RestTemplate restTemplate;
 
-    @Autowired
-    protected ReCaptchaAttemptService reCaptchaAttemptService;
-
     @Override
     public void processResponse(String response) throws CochinTravelsException {
-        if(!responseSanityCheck(response)) {
+        if (!responseSanityCheck(response)) {
             throw new CochinTravelsException("Response contains invalid characters");
         }
 
-        URI verifyUri = URI.create(String.format(RECAPTCHA_URL_TEMPLATE,getReCaptchaSecret(), response, getClientIP()));
+        URI verifyUri = URI.create(String.format(RECAPTCHA_URL_TEMPLATE, getReCaptchaSecret(), response, getClientIP()));
 
         GoogleResponse googleResponse = restTemplate.getForObject(verifyUri, GoogleResponse.class);
 
-        if(!googleResponse.isSuccess()) {
+        if (!googleResponse.isSuccess()) {
             throw new CochinTravelsException("reCaptcha was not successfully validated");
         }
     }
@@ -60,7 +56,7 @@ public class CaptchaService implements ICaptchaService {
     }
 
     @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder){
+    public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }
 

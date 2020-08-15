@@ -8,7 +8,7 @@ import java.util.Map;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@JsonPropertyOrder({ "success", "score", "action","challenge_ts", "hostname", "error-codes" })
+@JsonPropertyOrder({"success", "score", "action", "challenge_ts", "hostname", "error-codes"})
 public class GoogleResponse {
 
     @JsonProperty("success")
@@ -23,27 +23,6 @@ public class GoogleResponse {
     private String action;
     @JsonProperty("error-codes")
     private ErrorCode[] errorCodes;
-
-
-    enum ErrorCode {
-        MissingSecret, InvalidSecret, MissingResponse, InvalidResponse, BadRequest, TimeoutOrDuplicate;
-
-        private static Map<String, ErrorCode> errorsMap = new HashMap<>(6);
-
-        static {
-            errorsMap.put("missing-input-secret", MissingSecret);
-            errorsMap.put("invalid-input-secret", InvalidSecret);
-            errorsMap.put("missing-input-response", MissingResponse);
-            errorsMap.put("bad-request", InvalidResponse);
-            errorsMap.put("invalid-input-response", BadRequest);
-            errorsMap.put("timeout-or-duplicate", TimeoutOrDuplicate);
-        }
-
-        @JsonCreator
-        public static ErrorCode forValue(final String value) {
-            return errorsMap.get(value.toLowerCase());
-        }
-    }
 
     @JsonProperty("success")
     public boolean isSuccess() {
@@ -76,13 +55,13 @@ public class GoogleResponse {
     }
 
     @JsonProperty("error-codes")
-    public void setErrorCodes(ErrorCode[] errorCodes) {
-        this.errorCodes = errorCodes;
+    public ErrorCode[] getErrorCodes() {
+        return errorCodes;
     }
 
     @JsonProperty("error-codes")
-    public ErrorCode[] getErrorCodes() {
-        return errorCodes;
+    public void setErrorCodes(ErrorCode[] errorCodes) {
+        this.errorCodes = errorCodes;
     }
 
     @JsonProperty("score")
@@ -126,6 +105,26 @@ public class GoogleResponse {
 
     @Override
     public String toString() {
-        return "GoogleResponse{" + "success=" + success + ", challengeTs='" + challengeTs + '\'' + ", hostname='" + hostname + '\''+ ", score='" + score + '\''+ ", action='" + action+ '\'' + ", errorCodes=" + Arrays.toString(errorCodes) + '}';
+        return "GoogleResponse{" + "success=" + success + ", challengeTs='" + challengeTs + '\'' + ", hostname='" + hostname + '\'' + ", score='" + score + '\'' + ", action='" + action + '\'' + ", errorCodes=" + Arrays.toString(errorCodes) + '}';
+    }
+
+    enum ErrorCode {
+        MissingSecret, InvalidSecret, MissingResponse, InvalidResponse, BadRequest, TimeoutOrDuplicate;
+
+        private static Map<String, ErrorCode> errorsMap = new HashMap<>(6);
+
+        static {
+            errorsMap.put("missing-input-secret", MissingSecret);
+            errorsMap.put("invalid-input-secret", InvalidSecret);
+            errorsMap.put("missing-input-response", MissingResponse);
+            errorsMap.put("bad-request", InvalidResponse);
+            errorsMap.put("invalid-input-response", BadRequest);
+            errorsMap.put("timeout-or-duplicate", TimeoutOrDuplicate);
+        }
+
+        @JsonCreator
+        public static ErrorCode forValue(final String value) {
+            return errorsMap.get(value.toLowerCase());
+        }
     }
 }

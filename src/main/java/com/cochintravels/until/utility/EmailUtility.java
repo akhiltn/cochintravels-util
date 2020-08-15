@@ -1,7 +1,6 @@
 package com.cochintravels.until.utility;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -12,7 +11,7 @@ import java.util.Properties;
 @Configuration
 public class EmailUtility {
 
-    @Value( "${app.mail.password}" )
+    @Value("${cochintravels.mail.password}")
     private String password;
 
     @Bean

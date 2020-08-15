@@ -1,31 +1,56 @@
 package com.cochintravels.until.api;
 
+import com.cochintravels.until.exception.CochinTravelsException;
+import com.cochintravels.until.model.BookingForm;
 import com.cochintravels.until.service.EmailService;
+import com.cochintravels.until.service.captcha.ICaptchaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @RestController
+@RequestMapping("email")
 public class EmailNotification {
+
+    @Autowired
+    private ICaptchaService captchaService;
 
     @Autowired
     private EmailService service;
 
-    @PostMapping("/postNotificationEmail")
-    public HttpStatus postNotificationEmail(String body){
-        return HttpStatus.OK;
+    @Value("${cochintravels.mail.setTo}")
+    private String[] recipient;
+
+    @Value("${cochintravels.mail.subject}")
+    private String subject;
+
+    @PostMapping("/postContactForm")
+    public ResponseEntity<String> postContactFormEmail(@RequestBody BookingForm message) {
+        try {
+            captchaService.processResponse(message.getRecaptchaReactive());
+        } catch (CochinTravelsException e) {
+            log.error("reCaptcha Exception");
+            e.printStackTrace();
+            return new ResponseEntity<>("Error!! "+e.getMessage(), HttpStatus.UNAUTHORIZED);
+        } catch (Exception e) {
+            log.error("Something went wrong");
+            log.error(message.toString());
+            return new ResponseEntity<>("Server Error!! Sorry for Inconvenience", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        service.sendMail(recipient, subject, message.toString());
+        return new ResponseEntity<>("We will get back to you", HttpStatus.OK);
     }
 
     @GetMapping("/testMail")
-    public HttpStatus getTestMail(){
-        service.sendMail("noreply@gmail.com","Hello","Hello");
+    public HttpStatus getTestMail() {
+        Assert.notNull(recipient,"Recipient of email is null");
+        service.sendMail(recipient, "Hello", "Hello");
         return HttpStatus.OK;
     }
 

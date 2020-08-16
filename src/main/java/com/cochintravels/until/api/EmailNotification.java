@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @Slf4j
 @RestController
 @RequestMapping("email")

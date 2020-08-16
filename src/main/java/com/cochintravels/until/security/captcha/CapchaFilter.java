@@ -2,6 +2,8 @@ package com.cochintravels.until.security.captcha;
 
 import com.cochintravels.until.exception.CochinTravelsException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -14,27 +16,33 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
+@Order(1)
 public class CapchaFilter extends GenericFilterBean {
 
     @Autowired
     private ICaptchaService captchaService;
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
-
-        if (req.getRequestURI().contains("/email/postContactForm")) {
+    public void doFilter(ServletRequest serveleRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest httpServletRequest = (HttpServletRequest) serveleRequest;
+        HttpServletResponse httpServletResponse = (HttpServletResponse) servletResponse;
+        httpServletRequest.getHeaderNames();
+        httpServletRequest.getMethod();
+        if(HttpMethod.POST.matches(httpServletRequest.getMethod())){
+            System.out.println("Break");
+        }
+        if (httpServletRequest.getRequestURI().contains("/email/postContactForm") & HttpMethod.POST.matches(httpServletRequest.getMethod())) {
+            String captchaHeaderVal = httpServletRequest.getHeader("recaptchaReactive");
             try {
-                captchaService.processResponse(req.getHeader("recaptchaReactive"));
+                captchaService.processResponse(captchaHeaderVal);
             } catch (CochinTravelsException e) {
                 logger.error("Invalid Captcha");
-                res.reset();
-                res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                httpServletResponse.reset();
+                httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }
-            chain.doFilter(request, response);
+            logger.info("Success Captcha");
+            chain.doFilter(serveleRequest, servletResponse);
         }
-        ;
     }
 }

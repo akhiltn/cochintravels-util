@@ -1,4 +1,4 @@
-package com.cochintravels.until.security.captcha;
+package com.cochintravels.until.captcha;
 
 import com.cochintravels.until.exception.CochinTravelsException;
 

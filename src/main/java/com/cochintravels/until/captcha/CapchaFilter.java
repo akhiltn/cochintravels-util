@@ -1,3 +1,4 @@
+/*
 package com.cochintravels.until.security.captcha;
 
 import com.cochintravels.until.exception.CochinTravelsException;
@@ -45,4 +46,4 @@ public class CapchaFilter extends GenericFilterBean {
             chain.doFilter(serveleRequest, servletResponse);
         }
     }
-}
+}*/

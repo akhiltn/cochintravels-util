@@ -1,10 +1,11 @@
-package com.cochintravels.until.security.captcha;
+package com.cochintravels.until.captcha;
 
 import com.cochintravels.until.exception.CochinTravelsException;
 import com.cochintravels.until.model.GoogleResponse;
 import com.cochintravels.until.utility.CaptchaSettings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ public class CaptchaService implements ICaptchaService {
     @Autowired
     private CaptchaSettings captchaSettings;
     @Autowired
+    @Qualifier("captchaRestTemplate")
     private RestTemplate restTemplate;
 
     @Override
@@ -56,6 +58,7 @@ public class CaptchaService implements ICaptchaService {
     }
 
     @Bean
+    @Qualifier("captchaRestTemplate")
     public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }

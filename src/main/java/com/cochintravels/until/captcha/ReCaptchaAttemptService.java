@@ -1,4 +1,4 @@
-package com.cochintravels.until.security.captcha;
+package com.cochintravels.until.captcha;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;

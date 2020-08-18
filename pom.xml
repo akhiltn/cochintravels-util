@@ -15,7 +15,7 @@
     <description>Utility App for Client</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
         <spring-cloud.version>Hoxton.SR7</spring-cloud.version>
     </properties>
 
@@ -97,14 +97,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>appengine-maven-plugin</artifactId>
-                <configuration>
-                    <deploy.projectId>cochin-travels-app</deploy.projectId>
-                    <deploy.version>until-0.0.1-SNAPSHOT</deploy.version>
-                </configuration>
             </plugin>
         </plugins>
     </build>

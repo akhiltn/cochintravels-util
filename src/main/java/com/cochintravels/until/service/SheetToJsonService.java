@@ -28,7 +28,6 @@ public class SheetToJsonService {
     SheetRepository repo;
 
     @Autowired
-    @Qualifier("sheetServiceTemplate")
     RestTemplate restTemplate;
 
     public String getSheetData(String sheetName){
@@ -50,9 +49,4 @@ public class SheetToJsonService {
         repo.saveAll(list);
     }
 
-    @Bean
-    @Qualifier("sheetServiceTemplate")
-    public RestTemplate sheetRestTemplate(RestTemplateBuilder builder) {
-        return builder.build();
-    }
 }

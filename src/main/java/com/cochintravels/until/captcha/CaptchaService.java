@@ -29,7 +29,6 @@ public class CaptchaService implements ICaptchaService {
     @Autowired
     private CaptchaSettings captchaSettings;
     @Autowired
-    @Qualifier("captchaRestTemplate")
     private RestTemplate restTemplate;
 
     @Override
@@ -55,12 +54,6 @@ public class CaptchaService implements ICaptchaService {
     @Override
     public String getReCaptchaSecret() {
         return captchaSettings.getSecret();
-    }
-
-    @Bean
-    @Qualifier("captchaRestTemplate")
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder.build();
     }
 
     protected void securityCheck(final String response) throws CochinTravelsException {

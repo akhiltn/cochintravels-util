@@ -3,6 +3,7 @@ package com.cochintravels.until.api;
 import com.cochintravels.until.service.SheetToJsonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,8 @@ public class SheetApi {
     }
 
     @GetMapping("/getRefreshDBStatus")
-    public void getRefreshDBStatus(){
+    public HttpStatus getRefreshDBStatus(){
         sheetToJsonService.refreshDB();
+        return HttpStatus.OK;
     }
 }

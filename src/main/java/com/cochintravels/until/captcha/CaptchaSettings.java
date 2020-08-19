@@ -1,4 +1,4 @@
-package com.cochintravels.until.utility;
+package com.cochintravels.until.captcha;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

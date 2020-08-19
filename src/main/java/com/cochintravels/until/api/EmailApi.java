@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class EmailApi {
 
     @Autowired
-    private EmailService service;
+    private EmailService emailService;
 
     @Value("${cochintravels.mail.setTo}")
     private String[] recipient;
@@ -28,7 +28,7 @@ public class EmailApi {
 
     @PostMapping("/postContactForm")
     public ResponseEntity<String> postContactFormEmail(@RequestBody BookingForm message) {
-        service.sendMail(recipient, subject, message.toString());
+        emailService.sendMail(subject, message.toString(), recipient);
         return new ResponseEntity<>("We will get back to you", HttpStatus.OK);
     }
 }

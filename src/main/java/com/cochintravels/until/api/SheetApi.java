@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,8 +25,8 @@ public class SheetApi {
     }
 
     @GetMapping("/getRefreshDBStatus")
-    public HttpStatus getRefreshDBStatus() {
+    public ResponseEntity<String> getRefreshDBStatus() {
         sheetToJsonService.refreshDB();
-        return HttpStatus.OK;
+        return new ResponseEntity<>("Update DB with new Records", HttpStatus.CREATED);
     }
 }

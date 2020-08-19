@@ -16,7 +16,7 @@ public class UntilApplication {
     }
 
     @Bean
-    public RestTemplate sheetRestTemplate(RestTemplateBuilder builder) {
+    public RestTemplate restTemplate(RestTemplateBuilder builder) {
         return builder.build();
     }
 

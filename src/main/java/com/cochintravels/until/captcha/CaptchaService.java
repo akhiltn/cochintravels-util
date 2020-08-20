@@ -2,7 +2,6 @@ package com.cochintravels.until.captcha;
 
 import com.cochintravels.until.exception.CochinTravelsException;
 import com.cochintravels.until.model.GoogleResponse;
-import com.cochintravels.until.utility.CaptchaSettings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -34,6 +34,9 @@ public class CapchaFilter implements Filter {
                 return;
             }
             log.info("Success Captcha");
+        }else{
+            httpServletResponse.setHeader("Access-Control-Allow-Origin","*");
+            httpServletResponse.setHeader("Access-Control-Allow-Headers","*");
         }
         chain.doFilter(serveleRequest, servletResponse);
     }
